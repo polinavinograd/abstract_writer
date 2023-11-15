@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Система автоматического реферирования документов</title>
+</head>
+<body>
+    <button id="help-button" style="margin-bottom: 0.5rem">Помощь</button><br>
+    <input type="file" id="file-picker" style="margin-bottom: 0.5rem"><br>
+    <button id="commence-button" style="margin-bottom: 0.5rem" disabled>Реферировать</button><br>
+    <hr>
+    <div id="ref-result-container">
+        <h3>Реферат на основе Sentence Extraction</h3>
+        <p id="kw-ref-result"></p>
+        <hr>
+        <h3>Реферат на основе Machine Learning</h3>
+        <p id="ml-ref-result"></p>
+    </div>
+</body>
+<script src="main.js"></script>
+</html>
