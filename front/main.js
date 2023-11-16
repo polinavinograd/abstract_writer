@@ -1,4 +1,5 @@
 let currSelectedDocumentText;
+let currSelectedDocumentName;
 
 const filePicker = document.getElementById('file-picker');
 const helpButton = document.getElementById('help-button');
@@ -13,7 +14,7 @@ async function getKwRef(text) {
         headers: new Headers({
             "Content-Type": "application/json"
         }),
-        body: JSON.stringify({ text })
+        body: JSON.stringify({ text, name: currSelectedDocumentName })
     })
         .then(response => response.text());
 }
@@ -24,7 +25,7 @@ async function getMlRef(text) {
         headers: new Headers({
             "Content-Type": "application/json"
         }),
-        body: JSON.stringify({ text })
+        body: JSON.stringify({ text, name: currSelectedDocumentName })
     })
         .then(response => response.text());
 }
@@ -39,6 +40,7 @@ filePicker.addEventListener('change', function() {
         currSelectedDocumentText = fr.result;
         commenceButton.disabled = false;
     }
+    currSelectedDocumentName = this.files[0].name;
     fr.readAsText(this.files[0], 'CP1251');
 });
 

@@ -10,7 +10,7 @@ CORS(app)
 
 @app.route('/kwabstract', methods=['POST'])
 def kwabstract():
-    return keyword_based_abstract(Document('', request.json["text"]))
+    return keyword_based_abstract(Document(request.json["name"], request.json["text"]))
 
 
 @app.route('/mlabstract', methods=['POST'])
