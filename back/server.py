@@ -1,6 +1,6 @@
 from flask import Flask, request
 from flask_cors import CORS
-from main import keyword_based_abstract, machine_learning_abstract, sentence_extraction_abstract
+from main import keyword_based_abstract, machine_learning_abstract
 
 from document import Document
 
@@ -16,11 +16,6 @@ def kwabstract():
 @app.route('/mlabstract', methods=['POST'])
 def mlabstract():
     return machine_learning_abstract(Document('', request.json["text"]))
-
-
-@app.route('/seabstract', methods=['POST'])
-def seabstract():
-    return sentence_extraction_abstract(Document('', request.json["text"]))
 
 
 if __name__ == '__main__':
