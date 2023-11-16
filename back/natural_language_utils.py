@@ -10,6 +10,7 @@ try:
     from nltk.corpus import stopwords
 except ImportError:
     nltk.download("stopwords")
+    nltk.download("punkt")
 
 LEMMATIZER = WordNetLemmatizer()
 morph = MorphAnalyzer()
@@ -50,3 +51,20 @@ class NaturalLanguageUtils:
 
         finder.apply_freq_filter(2)
         return finder.nbest(bigram_measures.raw_freq, 100)
+
+    @staticmethod
+    def sentence_tokenize(text: str) -> 'list[str]':
+        return nltk.sent_tokenize(text)
+
+    @staticmethod
+    def extract_stop_words(text: str) -> 'list[str]':
+        return [word for word in nltk.word_tokenize(text) if word.isalpha() and word not in stop_words_eng and
+                word not in stop_words_rus]
+
+    @staticmethod
+    def get_word_frequency(word: str, text: str) -> float:
+        return nltk.FreqDist(nltk.word_tokenize(text))[word]
+
+    @staticmethod
+    def get_max_word_frequency(text: str) -> float:
+        return max(nltk.FreqDist(nltk.word_tokenize(text)).values())

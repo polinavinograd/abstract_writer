@@ -12,3 +12,6 @@ class Document:
 
     def normalized(self) -> 'list[str]':
         return NaturalLanguageUtils().normalize_tokens_only(self.tokenized())
+
+    def split_by_paragraphs(self) -> 'list[str]':
+        return self.text.split(".\n")
