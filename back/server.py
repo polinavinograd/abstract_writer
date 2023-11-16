@@ -19,7 +19,7 @@ def mlabstract():
 
 
 @app.route('/seabstract', methods=['POST'])
-def mlabstract():
+def seabstract():
     return sentence_extraction_abstract(Document('', request.json["text"]))
 
 
