@@ -1,5 +1,6 @@
 from keywords_based_abstract import KeywordsBasedAbstract
 from sentence_extraction import SentenceExtractor
+from ml_extractor import summary_extraction, get_abstract_summary
 
 from document import Document
 
@@ -26,7 +27,7 @@ def keyword_based_abstract(document: Document) -> str:
 
 
 def machine_learning_abstract(document: Document) -> str:
-    return "le ml abstract"
+    return get_abstract_summary(document)
 
 
 def sentence_extraction_abstract(document: Document) -> str:
