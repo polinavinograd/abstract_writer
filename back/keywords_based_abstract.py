@@ -59,3 +59,9 @@ class KeywordsBasedAbstract:
             for value in values:
                 result_string += f"    {' '.join(value)}\n"
         return result_string
+
+
+if __name__ == "__main__":
+    document = utils.get_document_by_name('eng_computer_science.html')
+    abstractor = KeywordsBasedAbstract()
+    print(abstractor.get_hierarchy_abstract(document))

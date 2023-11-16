@@ -41,7 +41,7 @@ filePicker.addEventListener('change', function() {
         commenceButton.disabled = false;
     }
     currSelectedDocumentName = this.files[0].name;
-    fr.readAsText(this.files[0], 'CP1251');
+    fr.readAsText(this.files[0], 'utf-8');
 });
 
 commenceButton.addEventListener('click', async () => {

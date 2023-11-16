@@ -1,4 +1,4 @@
-from transformers import pipeline
+from transformers import pipeline, AutoTokenizer
 import sentencepiece
 import math
 from langdetect import detect_langs
@@ -10,27 +10,29 @@ from sumy.nlp.stemmers import Stemmer
 
 from natural_language_utils import stop_words_rus, stop_words_eng
 from document import Document
+import utils
 
 stop_words = stop_words_rus.union(stop_words_eng)
 
 
 def get_abstract_summary(document: Document):
     scores = detect_langs(document.text)
-    if scores[0].lang == 'ru':
-        summarizer = pipeline("summarization", model='IlyaGusev/mbart_ru_sum_gazeta')
-    else:
-        summarizer = pipeline("summarization")
+    model_name = 'IlyaGusev/mbart_ru_sum_gazeta' if scores[0].lang == 'ru' else 'sshleifer/distilbart-cnn-12-6'
 
-    max_embedding = 1024*3
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    summarizer = pipeline("summarization", model=model_name)
+
+    max_token_count = 250  # Model's token limit
+    tokens = tokenizer(document.text, truncation=True, padding='longest', return_tensors="pt")['input_ids'][0]
 
     summary_text_full = ''
-    num = math.ceil(len(document.text) / max_embedding)
-    for i in range(num):
-        start = i*max_embedding
-        end = (i+1)*max_embedding
+    num_segments = math.ceil(len(tokens) / max_token_count)
 
-        summary_text = summarizer(document.text[start:end][:1024], max_length=1024, min_length=10, do_sample=False)
-        summary_text = summary_text[0]['summary_text']
+    for i in range(num_segments):
+        segment_tokens = tokens[i * max_token_count:(i + 1) * max_token_count]
+        segment_text = tokenizer.decode(segment_tokens, skip_special_tokens=True)
+        summary = summarizer(segment_text, max_length=250, min_length=10, do_sample=False)
+        summary_text = summary[0]['summary_text']
         summary_text_full += summary_text
 
     return summary_text_full
@@ -50,3 +52,8 @@ def summary_extraction(document: Document) -> str:
     summary = summarizer(parser.document, 10)
     return ' '.join([str(sentence) for sentence in summary])
 
+
+if __name__ == "__main__":
+    document = utils.get_document_by_name('rus_literature.html')
+
+    print(get_abstract_summary(document))
